@@ -6,6 +6,7 @@ import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -24,6 +25,7 @@ public class TCPClient {
     PrintWriter out;
     private MessageCallback listener = null;
     private boolean mRun = false;
+    private Socket msock ;
 
     public TCPClient(Handler mHandler, String command, String ipNumber, MessageCallback listener) {
         this.listener         = listener;
@@ -51,6 +53,15 @@ public class TCPClient {
     public void stopClient(){
         Log.d(TAG, "Client stopped!");
         mRun = false;
+        try {
+            msock.close();
+        }
+        catch (IOException ie)
+        {
+
+
+        }
+
     }
 
     public boolean isRunning(){
@@ -70,6 +81,9 @@ public class TCPClient {
            // mHandler.sendEmptyMessageDelayed(Main2Activity.CONNECTING,1000);
 
             Socket socket = new Socket(serverAddress, PORT);
+            msock = socket;
+
+            new Thread(new Listner(msock)).start();
 
             try {
 
@@ -87,15 +101,23 @@ public class TCPClient {
 
                 //Listen for the incoming messages while mRun = true
                 //while (mRun) {
-                   incomingMessage = in.readLine();
-                //System.out.println(incomingMessage);
-                System.out.println("abc");
+//                   incomingMessage = in.readLine();
+//                //System.out.println(incomingMessage);
+//                System.out.println("Server reply : "+incomingMessage);
+//
+//                incomingMessage = in.readLine();
+//                System.out.println("Server reply : "+incomingMessage);
+
+
+                    System.out.println(in.readLine());
+
+
                    // if (incomingMessage != null && listener != null && !"\n".equals(incomingMessage )) {
                        // if (incomingMessage != null && listener != null && !"\n".equals(incomingMessage )) {
 
                         //listener.callbackMessageReceiver(incomingMessage);
 
-                        System.out.println("Server reply : "+incomingMessage);
+
 
                     //}
                   //  incomingMessage = null;
@@ -114,11 +136,11 @@ public class TCPClient {
 
             } finally {
 
-                out.flush();
-                out.close();
-                in.close();
-                socket.close();
-                mHandler.sendEmptyMessageDelayed(Main2Activity.SENT, 3000);
+               // out.flush();
+              //  out.close();
+               // in.close();
+               // socket.close();
+              //  mHandler.sendEmptyMessageDelayed(Main2Activity.SENT, 3000);
                 Log.d(TAG, "Socket Closed");
             }
 

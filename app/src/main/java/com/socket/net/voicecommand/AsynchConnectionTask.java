@@ -46,6 +46,10 @@ public class AsynchConnectionTask extends AsyncTask<String, String, TCPClient>{
         }
         tcpClient.run();
 
+        while(MainActivity.flag == 1) {
+
+        }
+       tcpClient.stopClient();
         return null;
     }
 

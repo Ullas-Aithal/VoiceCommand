@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private final int REQ_CODE_SPEECH_INPUT = 100;
 
     private boolean AUTO_SEND = true;
+    public static int flag =1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,8 +119,10 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                sendCommand("quit");
-                ClientThread.endConnection();
+                //sendCommand("quit");
+               // ClientThread.endConnection();
+                flag = 0;
+
             }
         });
     }
